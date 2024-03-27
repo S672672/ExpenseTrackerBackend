@@ -22,7 +22,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://bsmith672:smith123@cluster0.xdxj3gv.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://bsmith672:smith123@cluster0.xdxj3gv.mongodb.net/expensetracker.ExpenseTracker', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })

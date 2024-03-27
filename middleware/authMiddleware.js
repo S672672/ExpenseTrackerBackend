@@ -1,3 +1,5 @@
+const { Module } = require("module");
+
 // Middleware to check if the user is authenticated
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -6,6 +8,6 @@ function ensureAuthenticated(req, res, next) {
     res.status(401).send('Unauthorized'); // User is not authenticated, send 401 Unauthorized response
 }
 
-export default {
+module.exports =   {
     ensureAuthenticated
 };
