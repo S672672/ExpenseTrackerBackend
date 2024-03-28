@@ -4,8 +4,10 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const authRoutes = require('./routes/authRoutes');
-
 const app = express();
+const cors = require('cors');
+
+app.use(cors());
 
 // Configure Express
 app.use(express.json());
@@ -22,7 +24,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://bsmith672:smith123@cluster0.xdxj3gv.mongodb.net/expensetracker.ExpenseTracker', {
+mongoose.connect('mongodb+srv://bsmith672:smith123@cluster0.xdxj3gv.mongodb.net/expensetracker', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
