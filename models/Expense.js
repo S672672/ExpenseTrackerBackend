@@ -1,39 +1,13 @@
 const mongoose = require('mongoose');
 
-// Define the schema for expenses
 const expenseSchema = new mongoose.Schema({
-    expense: {
-      type: String,
-      required: true
-    },
-    amount: {
-      type: Number,
-      required: true
-    },
-    bill: {
-      type: Buffer, // Changed to store file data directly
-      contentType: String // MIME type of the file
-    },
-    expenseType: {
-      type: String,
-      required: true
-    },
-    date: {
-      type: Date,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    agreeTerms: {
-      type: Boolean,
-      required: true
-    }
-  });
-  
+    expense:String,
+    amount:Number,
+    expenseType:String,
+    date : Date,
+    description:String,
+    agreeTerms:Boolean,
+},{timestamps:true});
 
-// Create a model for expenses using the expenseSchema
-const Expense = mongoose.model('Expense', expenseSchema);
-
+const Expense = mongoose.model("expenses",expenseSchema);
 module.exports = Expense;
