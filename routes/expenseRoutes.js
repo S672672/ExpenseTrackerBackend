@@ -2,37 +2,32 @@
 const express = require('express');
 const router = express.Router();
 const Expense = require('../models/Expense');
+const User = require('../models/User'); // Importing Expense model
 
 // Route to add a new expense
 router.post('/add', async (req, res) => {
   try {
-    const { expense, amount,expenseType,date, description,agreeTerms } = req.body;
+      // Assuming you're extracting user information from the request (e.g., from authentication middleware)
+      const { userId } = req;
 
-    // Create a new expense document
-    const newExpense = new Expense({
-      expense,
-      amount,
-      expenseType,
-      date,
-      description,
-      agreeTerms,
-    });
+      // Create a new expense document
+      const newExpense = new Expense({
+          ...req.body,// Set createdBy field to the ObjectId of the current user
+      });
 
-    // Save the expense to the database
-    await newExpense.save();
+      // Save the expense to the database
+      await newExpense.save();
 
-    // Send a success response
-    res.status(201).json({ message: 'Expense added successfully', expense: newExpense });
+      res.status(201).json({ message: 'Expense added successfully', expense: newExpense });
   } catch (error) {
-    // If an error occurs, send an error response
-    console.error('Error adding expense:', error);
-    res.status(500).json({ error: 'Internal server error' });
+      console.error('Error adding expense:', error);
+      res.status(500).json({ error: 'Failed to add expense' });
   }
 });
+
 // Route to fetch all expenses
-router.get('/all', async (req, res) => {
+router.get("/get-expenses", async (req, res) => {
   try {
-    // Fetch all expenses from the database
     const expenses = await Expense.find();
     res.status(200).json(expenses);
   } catch (error) {
@@ -41,6 +36,40 @@ router.get('/all', async (req, res) => {
   }
 });
 
+// Route to delete an expense by ID
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the expense by ID and delete it
+    await Expense.findByIdAndDelete(id);
+
+    res.status(200).json({ message: 'Expense deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting expense:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Route to update an expense by ID
+router.put("/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    // Find the expense by ID and update it with the new data
+    const updatedExpense = await Expense.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedExpense) {
+      return res.status(404).json({ error: 'Expense not found' });
+    }
+
+    res.status(200).json({ message: 'Expense updated successfully', expense: updatedExpense });
+  } catch (error) {
+    console.error('Error updating expense:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 // Export the router to be used in the main application
 module.exports = router;

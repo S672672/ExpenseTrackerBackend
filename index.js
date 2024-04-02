@@ -6,6 +6,7 @@ const User = require('./models/User');
 const authRoutes = require('./routes/authRoutes');
 const app = express();
 const cors = require('cors');
+const profileRoutes = require('./routes/profileRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 
 app.use(cors());
@@ -40,6 +41,7 @@ passport.deserializeUser(User.deserializeUser());
 // Routes
 app.use('/auth', authRoutes);
 app.use('/expenses',expenseRoutes);
+app.use('/get-profile',profileRoutes);
 
 // Start server
 const PORT = process.env.PORT || 3000;
