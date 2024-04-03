@@ -6,6 +6,7 @@ const User = require('../models/User'); // Importing Expense model
 
 // Route to add a new expense
 router.post('/add', async (req, res) => {
+  console.log('data',req.body);
   try {
       // Assuming you're extracting user information from the request (e.g., from authentication middleware)
       const { userId } = req;
@@ -24,6 +25,19 @@ router.post('/add', async (req, res) => {
       res.status(500).json({ error: 'Failed to add expense' });
   }
 });
+
+router.post("/add-expense", async (req, res) => {
+  try {
+    const data = req.body;
+    console.log(data)
+    const newExpense = new Expense({...data});
+    await newExpense.save();
+    res.status(201).json({ message: 'Expense added successfully', expense: newExpense });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Failed to add expense' });
+  }
+})
 
 // Route to fetch all expenses
 router.get("/get-expenses", async (req, res) => {
@@ -57,14 +71,20 @@ router.put("/update/:id", async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    // Find the expense by ID and update it with the new data
-    const updatedExpense = await Expense.findByIdAndUpdate(id, updateData, { new: true });
+    // Find the expense by ID
+    let expense = await Expense.findById(id);
 
-    if (!updatedExpense) {
+    if (!expense) {
       return res.status(404).json({ error: 'Expense not found' });
     }
 
-    res.status(200).json({ message: 'Expense updated successfully', expense: updatedExpense });
+    // Update the expense with the new data
+    expense = Object.assign(expense, updateData);
+
+    // Save the updated expense
+    await expense.save();
+
+    res.status(200).json({ message: 'Expense updated successfully', expense });
   } catch (error) {
     console.error('Error updating expense:', error);
     res.status(500).json({ error: 'Internal server error' });

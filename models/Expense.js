@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const expenseSchema = new mongoose.Schema({
     expenseTitle: String,
-    expenseAmount: Number,
+    expenseAmount: String,
     expenseType: String,
     expenseDate: Date,
     description: String,

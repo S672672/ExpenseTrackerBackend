@@ -2,8 +2,10 @@ const User = require('../models/User');
 
 // Controller to get user profile
 const getUserProfile = async (req, res) => {
+    const {id} = req.params;
+    console.log('id',id)
     try {
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

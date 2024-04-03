@@ -9,10 +9,11 @@ const cors = require('cors');
 const profileRoutes = require('./routes/profileRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 
-app.use(cors());
 
 // Configure Express
 app.use(express.json());
+// app.use(express.urlencoded({extended: false}));
+app.use(cors());
 
 // Configure session middleware
 app.use(session({
@@ -44,7 +45,7 @@ app.use('/expenses',expenseRoutes);
 app.use('/get-profile',profileRoutes);
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

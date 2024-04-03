@@ -5,7 +5,7 @@ const profileController = require('../controllers/profileController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Route to get user profile
-router.get('/', authMiddleware.ensureAuthenticated, profileController.getUserProfile);
+router.get('/:id', profileController.getUserProfile);
 
 // Route to update user profile
 router.put('/', authMiddleware.ensureAuthenticated, profileController.updateUserProfile);
