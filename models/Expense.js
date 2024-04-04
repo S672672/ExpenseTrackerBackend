@@ -7,6 +7,10 @@ const expenseSchema = new mongoose.Schema({
     expenseDate: Date,
     description: String,
     agreeTerms: Boolean,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, { timestamps: true });
 
 const Expense = mongoose.model('Expense', expenseSchema);

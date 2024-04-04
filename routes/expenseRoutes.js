@@ -71,20 +71,14 @@ router.put("/update/:id", async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    // Find the expense by ID
-    let expense = await Expense.findById(id);
+    // Find the expense by ID and update it with the new data
+    const updatedExpense = await Expense.findByIdAndUpdate(id, updateData, { new: true });
 
-    if (!expense) {
+    if (!updatedExpense) {
       return res.status(404).json({ error: 'Expense not found' });
     }
 
-    // Update the expense with the new data
-    expense = Object.assign(expense, updateData);
-
-    // Save the updated expense
-    await expense.save();
-
-    res.status(200).json({ message: 'Expense updated successfully', expense });
+    res.status(200).json({ message: 'Expense updated successfully', expense: updatedExpense });
   } catch (error) {
     console.error('Error updating expense:', error);
     res.status(500).json({ error: 'Internal server error' });
